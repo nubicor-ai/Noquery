@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>noquery // ER Resuscitation Diagnostic Co-Pilot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(1000%); }
+    }
+    .scan-beam {
+      animation: scanline 3.5s linear infinite;
+    }
+    .crt-glow {
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- TOP RESUSCITATION HUD HEADER -->
+  <header class="bg-slate-900/90 border-b border-slate-800 px-6 py-3.5 backdrop-blur-md sticky top-0 z-50 flex items-center justify-between shadow-2xl">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <div class="h-3 w-3 rounded-full bg-emerald-500 animate-ping"></div>
+        <div class="h-3 w-3 rounded-full bg-emerald-500 -ml-5"></div>
+        <span class="font-black text-2xl tracking-tighter text-white crt-glow">noquery<span class="text-emerald-400">.ai</span></span>
+      </div>
+      <div class="h-5 w-px bg-slate-800"></div>
+      <div class="flex items-center gap-2 text-xs font-mono uppercase bg-slate-800/80 px-2.5 py-1 rounded text-slate-300 border border-slate-700/60">
+        <i class="fa-solid fa-hospital-user text-emerald-400"></i>
+        <span>Bay 01: Critical Resus</span>
+      </div>
+      <div class="hidden lg:flex items-center gap-2 text-xs font-mono bg-amber-500/10 text-amber-300 border border-amber-500/30 px-2.5 py-1 rounded">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Bedside CT Prohibited (Hemodynamically Unstable)</span>
+      </div>
+    </div>
+
+    <!-- LIVE TELEMETRY STREAM STRIP -->
+    <div class="flex items-center gap-4 text-xs font-mono">
+      <div class="flex items-center gap-2 bg-slate-950/70 border border-slate-800 px-3 py-1.5 rounded-lg shadow-inner">
+        <span class="text-slate-500 font-bold">HR:</span>
+        <span id="vital-hr" class="text-rose-400 font-black text-sm">138</span>
+        <span class="text-[10px] text-slate-600">BPM</span>
+      </div>
+      <div class="flex items-center gap-2 bg-slate-950/70 border border-slate-800 px-3 py-1.5 rounded-lg shadow-inner">
+        <span class="text-slate-500 font-bold">BP:</span>
+        <span id="vital-bp" class="text-rose-400 font-black text-sm">74/42</span>
+        <span class="text-[10px] text-slate-600">(MAP 52)</span>
+      </div>
+      <div class="flex items-center gap-2 bg-slate-950/70 border border-slate-800 px-3 py-1.5 rounded-lg shadow-inner">
+        <span class="text-slate-500 font-bold">SpO₂:</span>
+        <span id="vital-spo2" class="text-cyan-400 font-black text-sm">91%</span>
+      </div>
+      <div class="flex items-center gap-2 bg-slate-950/70 border border-slate-800 px-3 py-1.5 rounded-lg shadow-inner">
+        <span class="text-slate-500 font-bold">Shock Index:</span>
+        <span id="vital-si" class="text-amber-400 font-black text-sm">1.86</span>
+        <span class="text-[10px] text-rose-500 font-bold animate-pulse">CRIT</span>
+      </div>
+      <button onclick="toggleResusNoteModal()" class="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs uppercase px-3 py-1.5 rounded transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/30">
+        <i class="fa-solid fa-file-waveform"></i>
+        <span>Auto-Note</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- WORKFLOW BANNER: HARDWARE FEEDS & CLINICAL SCENARIOS -->
+  <div class="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border-b border-slate-800/80 px-6 py-2 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
+    <div class="flex items-center gap-2">
+      <!-- MP4 Upload Input (Hidden) -->
+      <input type="file" id="video-file-input" accept="video/mp4,video/webm" class="hidden" onchange="handleFileUpload
+        
